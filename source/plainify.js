@@ -1,31 +1,33 @@
-let plainify = (obj) => {
-    let result = {};
+let plainify = (object) => {
+    if ( !isObject(object) ) {
+        return undefined;
+    }
 
-    for (let [key, value] of Object.entries(obj)) {
-        if (isObject(value)) {
+    const result = {};
 
-            let temp  = plainify(value);
-
-            for (let [key1, value1] of Object.entries(temp)) {
-                result[key + '.' + key1] = value1;
-            }
-
-
-
-            break;
-        }
-
-        result[key] = value;
+    for (const [key, value] of Object.entries(object)) {
+        addProperty(result, key, value);
     }
 
     return result;
 }
 
-const isObject = (obj) => (typeof obj == 'object');
+const isObject = (object) => (typeof object == 'object');
 
+const addProperty = (object, key, value) => {
+    ( isObject(value) ) ?
+        addNestedProperty(object, key, value) :
+        addPlainProperty(object, key, value);
+}
 
+const addPlainProperty = (object, key, value) => {
+    object[key] = value;
+}
 
+const addNestedProperty = (parentObject, parentKey, parentValue) => {
+    const childObject  = plainify(parentValue);
 
-
-
- 
+    for (const [childKey, childValue] of Object.entries(childObject)) {
+        parentObject[parentKey + '.' + childKey] = childValue;
+    }
+}
