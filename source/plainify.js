@@ -1,21 +1,29 @@
-let plainify = (object) => {
-    if ( !isObject(object) ) {
-        return undefined;
+/** @module plainify */
+
+/**
+ * Plainify nested object to plain object
+ * @param {object} object - nested object to plainify
+ * @returns {object} plain object
+ */
+
+const plainify = (object) => {
+    if (typeof object != 'object') {
+        return;
     }
 
     const result = {};
 
-    for (const [key, value] of Object.entries(object)) {
-        addProperty(result, key, value);
-    }
+    Object.entries(object).forEach((item) => {
+        addProperty(result, item[0], item[1]);
+    });
 
     return result;
 }
 
-const isObject = (object) => (typeof object == 'object');
-
 const addProperty = (object, key, value) => {
-    ( isObject(value) ) ?
+    if (typeof value === null) return;
+
+    (typeof value == 'object') ?
         addNestedProperty(object, key, value) :
         addPlainProperty(object, key, value);
 }
@@ -28,6 +36,6 @@ const addNestedProperty = (parentObject, parentKey, parentValue) => {
     const childObject  = plainify(parentValue);
 
     for (const [childKey, childValue] of Object.entries(childObject)) {
-        parentObject[parentKey + '.' + childKey] = childValue;
+        parentObject[`${parentKey}.${childKey}`] = childValue;
     }
 }

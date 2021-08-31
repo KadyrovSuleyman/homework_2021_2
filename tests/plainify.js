@@ -1,5 +1,3 @@
-'use strict';
-
 QUnit.module('Тестируем функцию plainify', function () {
 	QUnit.test('Тест не объекта', function (assert) {
 		assert.deepEqual(plainify(5), undefined);
@@ -7,6 +5,26 @@ QUnit.module('Тестируем функцию plainify', function () {
 
 	QUnit.test('Тест пустого объекта', function (assert) {
 		assert.deepEqual(plainify({}), {});
+	})
+
+	QUnit.test('Тест объекта с числом', function (assert) {
+		assert.deepEqual(plainify({number: 1}), {'number': 1});
+	})
+
+	QUnit.test('Тест объекта с большим числом', function (assert) {
+		assert.deepEqual(plainify({bigint: 1n}), {'bigint': 1n});
+	})
+
+	QUnit.test('Тест объекта со строкой', function (assert) {
+		assert.deepEqual(plainify({string: 'test string'}), {'string': 'test string'});
+	})
+
+	QUnit.test('Тест объекта с логическим значением', function (assert) {
+		assert.deepEqual(plainify({bool: true}), {'bool': true});
+	})
+
+	QUnit.test('Тест объекта с неопределенным значение ', function (assert) {
+		assert.deepEqual(plainify({foo: undefined}), {'foo': undefined});
 	})
 
 	QUnit.test('Тест объекта без вложенных свойств', function (assert) {
@@ -56,6 +74,11 @@ QUnit.module('Тестируем функцию plainify', function () {
 		};
 
 		assert.deepEqual(plainify(nested), plain);
+	});
+
+	QUnit.test('Тест объекта с массивами', function (assert) {
+		assert.deepEqual(plainify({foo: [ ['nested', 4], 3, 6]}), 
+						{'foo.0.0': 'nested', 'foo.0.1': 4, 'foo.1': 3, 'foo.2': 6});
 	});
 
 });
