@@ -23,9 +23,11 @@ const plainify = (object) => {
 const addProperty = (object, key, value) => {
     if (typeof value === null) return;
 
-    (typeof value == 'object') ?
-        addNestedProperty(object, key, value) :
+    if ((typeof value == 'object') && (!Array.isArray(value))) {
+        addNestedProperty(object, key, value);
+    } else {
         addPlainProperty(object, key, value);
+    }
 }
 
 const addPlainProperty = (object, key, value) => {

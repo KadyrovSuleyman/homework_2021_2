@@ -77,8 +77,7 @@ QUnit.module('Тестируем функцию plainify', function () {
 	});
 
 	QUnit.test('Тест объекта с массивами', function (assert) {
-		assert.deepEqual(plainify({foo: [ ['nested', 4], 3, 6]}), 
-						{'foo.0.0': 'nested', 'foo.0.1': 4, 'foo.1': 3, 'foo.2': 6});
+		assert.deepEqual(plainify({foo: {nested: [1, 2]}}), {'foo.nested': [1, 2]});
 	});
 
 });
