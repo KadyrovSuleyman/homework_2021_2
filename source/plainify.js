@@ -13,8 +13,8 @@ const plainify = (object) => {
 
     const result = {};
 
-    Object.entries(object).forEach((item) => {
-        addProperty(result, item[0], item[1]);
+    Object.entries(object).forEach(([key, value]) => {
+        addProperty(result, key, value);
     });
 
     return result;
@@ -37,7 +37,7 @@ const addPlainProperty = (object, key, value) => {
 const addNestedProperty = (parentObject, parentKey, parentValue) => {
     const childObject  = plainify(parentValue);
 
-    for (const [childKey, childValue] of Object.entries(childObject)) {
+    Object.entries(childObject).forEach(([childKey, childValue]) => {
         parentObject[`${parentKey}.${childKey}`] = childValue;
-    }
+    });
 }
