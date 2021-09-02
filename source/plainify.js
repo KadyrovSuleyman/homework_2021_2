@@ -5,7 +5,6 @@
  * @param {object} object - nested object to plainify
  * @returns {object} plain object
  */
-
 const plainify = (object) => {
     if (typeof object != 'object') {
         return;
@@ -20,6 +19,12 @@ const plainify = (object) => {
     return result;
 }
 
+/**
+ * To add property to object. Plainify property value first if it's nested
+ * @param {object} object - target object for property adding
+ * @param {string} key - key of added property
+ * @param value - value of added property
+ */
 const addProperty = (object, key, value) => {
     if (typeof value === null) return;
 
