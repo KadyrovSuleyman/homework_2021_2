@@ -23,21 +23,15 @@ const plainify = (object) => {
 const addProperty = (object, key, value) => {
     if (typeof value === null) return;
 
-    if ((typeof value == 'object') && (!Array.isArray(value))) {
-        addNestedProperty(object, key, value);
-    } else {
-        addPlainProperty(object, key, value);
+    if ( (typeof value == 'object') && (!Array.isArray(value)) ) {
+        const childObject  = plainify(value);
+        
+        Object.entries(childObject).forEach(([childKey, childValue]) => {
+            object[`${key}.${childKey}`] = childValue;
+        });
+
+        return;
     }
-}
 
-const addPlainProperty = (object, key, value) => {
     object[key] = value;
-}
-
-const addNestedProperty = (parentObject, parentKey, parentValue) => {
-    const childObject  = plainify(parentValue);
-
-    Object.entries(childObject).forEach(([childKey, childValue]) => {
-        parentObject[`${parentKey}.${childKey}`] = childValue;
-    });
 }
